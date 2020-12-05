@@ -1,17 +1,23 @@
 #include "UserInterface.h"
 
+
 UserInterface::UserInterface() : 
 lcd(0x27,16,2)
 {
   buttonActive=true;
-  //currentEntry=&makeRainEntry;
+  snprintf(line1,17,"Hello world !");
+  snprintf(line2,17,"Appuye sur OK :)");
+  currentEntry=&makeRainEntry;
+  isUIActive=true;
 }
 
-void UserInterface::printSomething(int lineNo,char* msg)
+void UserInterface::printAll()
 {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print(msg);
+  lcd.print(line1);
+  lcd.setCursor(0,1);
+  lcd.print(line2);
 }
 
 void UserInterface::update()
@@ -20,46 +26,49 @@ void UserInterface::update()
 
   if(buttonState < 990 && buttonActive)//Button down (has to go up again to consider it down again
   {
-    lcd.clear();
-  lcd.setCursor(0,0);
     buttonActive=false;//Deactivates the button to tell we already pressed it
-    //MenuEntry* tempEntry=0;//Temporary pointer to safely update currentEntry
+    MenuEntry* tempEntry=0;//Temporary pointer to safely update currentEntry
     if(buttonState<100)
     {
-      //tempEntry = currentEntry->update(-1);
-      if(true)
+      tempEntry = currentEntry->update(-1);
+      if(tempEntry)
       {
-        //currentEntry=tempEntry;
+        currentEntry=tempEntry;
       }
-      lcd.print("<-");
     }
     else if(buttonState < 600)
     {
-      //tempEntry = currentEntry->update(0);
-      if(true)
+      tempEntry = currentEntry->update(0);
+      if(tempEntry)
       {
-        //currentEntry=tempEntry;
+        currentEntry=tempEntry;
       }
-      lcd.print("Menu");
     }
     else if(buttonState <780)
     {
-      //tempEntry = currentEntry->update(1);
-      if(true)
+      tempEntry = currentEntry->update(1);
+      if(tempEntry)
       {
-        //currentEntry=tempEntry;
+        currentEntry=tempEntry;
       }
-      lcd.print("->");
     }
-    Serial.println(/*currentEntry->_line1*/"Clicked !");
-
+    refresh();
   }
 
-  if(analogRead(A0)>990)
+  if(analogRead(A0)>990 && buttonClick.getElapsedTime()>500l)
   {
     buttonActive=true;
   }
 
+}
+
+void UserInterface::refresh()
+{
+  if(currentEntry && isUIActive)
+  {
+    currentEntry->show(line1,line2);
+    printAll();
+  }
 }
 
 void UserInterface::initializeUI()
@@ -67,7 +76,12 @@ void UserInterface::initializeUI()
   lcd.init();
   lcd.backlight();
   lcd.setCursor(0,0);
-  lcd.print("Hello world");
+  lcd.print(line1);
+  lcd.setCursor(0,1);
+  lcd.print(line2);
 }
+
+
+
 
 

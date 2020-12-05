@@ -5,6 +5,8 @@
 #include "LiquidCrystal_I2C.h"
 #include "MenuEntry.h"
 
+#include "Timer.h"
+
 class UserInterface
 {
 public:
@@ -14,18 +16,10 @@ public:
 
   void initializeUI();
   
-  void printSomething(int lineNo,char* msg);
-
-private:
-
-  boolean buttonActive;
-
-  int buttonState=1023;
-
-  LiquidCrystal_I2C lcd;
-
-  MenuEntry currentEntry;
-
+  void printAll();
+  
+  void refresh();
+  
   MenuEntry makeRainEntry;
   MenuEntry stopRainEntry;
   MenuEntry lookTempEntry;
@@ -35,9 +29,29 @@ private:
   MenuEntry temperWatcher;
   MenuEntry humidiWatcher;
 
+private:
+
+  boolean buttonActive;
+
+  int buttonState=1023;
+
+  LiquidCrystal_I2C lcd;
+
+  MenuEntry* currentEntry;
+  
+  char line1[17];
+  char line2[17];
+  
+  
+  Timer buttonClick;
+  Timer lastTimeClicked;
+  
+  boolean isUIActive;
+
 
 
 };
 
 #endif
+
 

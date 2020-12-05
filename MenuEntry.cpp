@@ -30,12 +30,13 @@ MenuEntry* MenuEntry::update(int button)
   
 }
 
-MenuEntry* MenuEntry::show(int button)
+void MenuEntry::show(char* line1,char* line2)
 {
   if(showFn)
   {
-    showFn(this,button);
+    showFn(line1,line2);
   }
 }
+
 
 
