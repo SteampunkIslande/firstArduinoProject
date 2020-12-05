@@ -3,25 +3,23 @@
 
 #include "Arduino.h"
 
+typedef void (*callBackFunction)(void);
+
 class MenuEntry
 {
 
 public:
-
-  typedef MenuEntry* (*callBack)(MenuEntry *self, int);
-  typedef void (*showFunction)(char* line1,char* line2);
+MenuEntry();
+  virtual MenuEntry *onClick(int button)=0;
+  virtual void show(char* line1,char* line2)=0;
   
-  MenuEntry *update(int button);
-  void show(char* line1,char* line2);
-
-  callBack next;
-  callBack previous;
-  callBack validate;
-  showFunction showFn;
-  
+  MenuEntry *nextEntry;
+  MenuEntry *previousEntry;
+  MenuEntry *okEntry;
 
 };
 
 #endif
+
 
 

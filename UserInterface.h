@@ -19,19 +19,10 @@ public:
   void printAll();
   
   void refresh();
-  
-  MenuEntry makeRainEntry;
-  MenuEntry stopRainEntry;
-  MenuEntry lookTempEntry;
-  MenuEntry lookHumiEntry;
-
-
-  MenuEntry temperWatcher;
-  MenuEntry humidiWatcher;
 
 private:
 
-  boolean buttonActive;
+  boolean buttonActive=true;
 
   int buttonState=1023;
 
@@ -53,5 +44,6 @@ private:
 };
 
 #endif
+
 
 

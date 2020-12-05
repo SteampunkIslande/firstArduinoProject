@@ -7,7 +7,6 @@ lcd(0x27,16,2)
   buttonActive=true;
   snprintf(line1,17,"Hello world !");
   snprintf(line2,17,"Appuye sur OK :)");
-  currentEntry=&makeRainEntry;
   isUIActive=true;
 }
 
@@ -26,31 +25,25 @@ void UserInterface::update()
 
   if(buttonState < 990 && buttonActive)//Button down (has to go up again to consider it down again
   {
+    lastTimeClicked.restart();
+    isUIActive=true;//Just clicked, so wake up if you were not
     buttonActive=false;//Deactivates the button to tell we already pressed it
     MenuEntry* tempEntry=0;//Temporary pointer to safely update currentEntry
     if(buttonState<100)
     {
-      tempEntry = currentEntry->update(-1);
-      if(tempEntry)
-      {
-        currentEntry=tempEntry;
-      }
+      tempEntry = currentEntry->onClick(-1);
     }
     else if(buttonState < 600)
     {
-      tempEntry = currentEntry->update(0);
-      if(tempEntry)
-      {
-        currentEntry=tempEntry;
-      }
+      tempEntry = currentEntry->onClick(0);
     }
     else if(buttonState <780)
     {
-      tempEntry = currentEntry->update(1);
-      if(tempEntry)
-      {
-        currentEntry=tempEntry;
-      }
+      tempEntry = currentEntry->onClick(1);
+    }
+    if(tempEntry)
+    {
+      currentEntry=tempEntry;
     }
     refresh();
   }
@@ -58,6 +51,12 @@ void UserInterface::update()
   if(analogRead(A0)>990 && buttonClick.getElapsedTime()>500l)
   {
     buttonActive=true;
+    buttonClick.restart();
+  }
+  
+  if(lastTimeClicked.getElapsedTime()>30000l)
+  {
+    isUIActive=false;
   }
 
 }
@@ -80,6 +79,7 @@ void UserInterface::initializeUI()
   lcd.setCursor(0,1);
   lcd.print(line2);
 }
+
 
 
 
