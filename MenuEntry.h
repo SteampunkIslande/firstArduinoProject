@@ -19,9 +19,6 @@ public:
 
 };
 
-class ControlRain;
-class TemperatureEntry;
-class HumidityEntry;
 
 #endif
 

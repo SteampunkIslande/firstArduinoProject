@@ -1,5 +1,14 @@
 #include "UserInterface.h"
 
+byte eacute[]={
+  B00100,
+  B01000,
+  B01110,
+  B10001,
+  B11111,
+  B10000,
+  B01110,
+  B00000};
 
 UserInterface::UserInterface() : 
 lcd(0x27,16,2)
@@ -14,24 +23,32 @@ void UserInterface::printAll()
 {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print(line1);
+  char* cur=line1;
+  while(*cur)
+  {
+    lcd.write(*cur++);
+  }
   lcd.setCursor(0,1);
-  lcd.print(line2);
+  cur=line2;
+  while(*cur)
+  {
+    lcd.write(*cur++);
+  }
 }
 
 void UserInterface::update()
 {
   buttonState=analogRead(A0);
 
-  if(buttonState < 990 && buttonActive)//Button down (has to go up again to consider it down again
+  if(buttonState < 900 && buttonActive)//Button down (has to go up again to consider it down again
   {
     lastTimeClicked.restart();
     isUIActive=true;//Just clicked, so wake up if you were not
     buttonActive=false;//Deactivates the button to tell we already pressed it
     MenuEntry* tempEntry=0;//Temporary pointer to safely update currentEntry
-    if(buttonState<100)
+    if(buttonState<400)
     {
-      tempEntry = currentEntry->onClick(-1);
+      tempEntry = currentEntry->onClick(1);
     }
     else if(buttonState < 600)
     {
@@ -39,7 +56,7 @@ void UserInterface::update()
     }
     else if(buttonState <780)
     {
-      tempEntry = currentEntry->onClick(1);
+      tempEntry = currentEntry->onClick(-1);
     }
     if(tempEntry)
     {
@@ -48,7 +65,7 @@ void UserInterface::update()
     refresh();
   }
 
-  if(analogRead(A0)>990 && buttonClick.getElapsedTime()>500l)
+  if(buttonState>900 && buttonClick.getElapsedTime()>500l)
   {
     buttonActive=true;
     buttonClick.restart();
@@ -72,7 +89,9 @@ void UserInterface::refresh()
 
 void UserInterface::initializeUI()
 {
-  lcd.init();
+  lcd.init();  
+  lcd.createChar(1,eacute);
+  
   lcd.backlight();
   lcd.setCursor(0,0);
   lcd.print(line1);

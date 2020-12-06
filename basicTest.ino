@@ -3,7 +3,13 @@
 #include <LiquidCrystal_I2C.h>
 
 #include "UserInterface.h"
+
 #include "MenuEntry.h"
+
+#include "ControlRain.h"
+#include "HumidityEntry.h"
+#include "TemperatureEntry.h"
+
 #include "Timer.h"
 
 #define DHTPIN_1 2
@@ -51,9 +57,11 @@ void setup()
   dht1.begin();
   dht2.begin();
 
+
   rainControl.previousEntry=&humidityEntry;
   rainControl.okEntry=0;
   rainControl.nextEntry=&temperatureEntry;
+
 
   temperatureEntry.previousEntry=&rainControl;
   temperatureEntry.okEntry=0;
@@ -66,6 +74,9 @@ void setup()
   humidityEntry.nextEntry=&rainControl;
   humidityEntry.humidities=humidities;
   humidityEntry.humiCount=2;
+  
+  ui.currentEntry=&rainControl;
+
 
 }
 

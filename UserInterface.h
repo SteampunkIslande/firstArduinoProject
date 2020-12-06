@@ -19,7 +19,9 @@ public:
   void printAll();
 
   void refresh();
-
+  
+  MenuEntry* currentEntry;
+  
 private:
 
   boolean buttonActive=true;
@@ -28,7 +30,7 @@ private:
 
   LiquidCrystal_I2C lcd;
 
-  MenuEntry* currentEntry;
+  
 
   char line1[17];
   char line2[17];
