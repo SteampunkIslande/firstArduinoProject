@@ -47,19 +47,25 @@ void setup()
 {
   Serial.begin(9600);
   ui.initializeUI();
-  
+
   dht1.begin();
   dht2.begin();
-  
+
   rainControl.previousEntry=&humidityEntry;
   rainControl.okEntry=0;
   rainControl.nextEntry=&temperatureEntry;
-  
+
   temperatureEntry.previousEntry=&rainControl;
   temperatureEntry.okEntry=0;
   temperatureEntry.nextEntry=&humidityEntry;
-  
-  humidityEntry.
+  temperatureEntry.temperatures=temperatures;
+  temperatureEntry.temperatureCount=4;
+
+  humidityEntry.previousEntry=&temperatureEntry;
+  humidityEntry.okEntry=0;
+  humidityEntry.nextEntry=&rainControl;
+  humidityEntry.humidities=humidities;
+  humidityEntry.humiCount=2;
 
 }
 
@@ -67,6 +73,10 @@ void retrieveSensorInfo()
 {
   temperatures[0]=(int)(dht1.readTemperature()*10);
   temperatures[1]=(int)(dht2.readTemperature()*10);
+
+  humidities[0]=(int)(dht1.readHumidity());
+  humidities[1]=(int)(dht2.readHumidity());
+
   ui.refresh();
 }
 
@@ -80,6 +90,7 @@ void loop()
     sensorTimer.restart();
   }
 }
+
 
 
 

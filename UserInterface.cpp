@@ -53,7 +53,7 @@ void UserInterface::update()
     buttonActive=true;
     buttonClick.restart();
   }
-  
+
   if(lastTimeClicked.getElapsedTime()>30000l)
   {
     isUIActive=false;
@@ -79,6 +79,7 @@ void UserInterface::initializeUI()
   lcd.setCursor(0,1);
   lcd.print(line2);
 }
+
 
 
 

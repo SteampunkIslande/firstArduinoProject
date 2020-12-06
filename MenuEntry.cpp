@@ -8,17 +8,18 @@ MenuEntry::MenuEntry()
   okEntry=0;
 }
 
-class ControlRain : public MenuEntry
+class ControlRain : 
+public MenuEntry
 {
-  public:
-  
+public:
+
   ControlRain()
   {
     isRaining=false;
     makeRain=0;
     stopRain=0;
   }
-  
+
   MenuEntry *onClick(int button)
   {
     if(button==0)
@@ -26,12 +27,12 @@ class ControlRain : public MenuEntry
       if(isRaining)
       {
         if(stopRain)
-        stopRain();
+          stopRain();
       }
       else
       {
         if(makeRain)
-        makeRain();
+          makeRain();
       }
       isRaining=!isRaining;
       return this;
@@ -45,7 +46,7 @@ class ControlRain : public MenuEntry
       return nextEntry;
     }
   }
-  
+
   void show(char* line1,char* line2)
   {
     if(isRaining)
@@ -60,23 +61,25 @@ class ControlRain : public MenuEntry
       snprintf(line2,17,"       OK       ");
     }
   }
-  
+
   callBackFunction makeRain;
   callBackFunction stopRain;
+private:
   boolean isRaining;
-  
+
 };
 
-class TemperatureEntry : public MenuEntry
+class TemperatureEntry : 
+public MenuEntry
 {
-  public:
-  
+public:
+
   TemperatureEntry()
   {
     curTempShown=0;
     showingTemperature=false;
   }
-  
+
   MenuEntry *onClick(int button)
   {
     if(showingTemperature)
@@ -100,11 +103,11 @@ class TemperatureEntry : public MenuEntry
     {
       if(button<0)
       {
-        return previous;
+        return previousEntry;
       }
       if(button>0)
       {
-        return next;
+        return nextEntry;
       }
       if(button==0)
       {
@@ -113,12 +116,12 @@ class TemperatureEntry : public MenuEntry
       return this;
     }
   }
-  
+
   void show(char* line1,char* line2)
   {
     if(showingTemperature)
     {
-      snprintf(line1,17,"Temp. %d: %2d.%d%cC",currTempShown+1,temperatures[curTempShown]/10,temperatures[curTempShown]%10,223);
+      snprintf(line1,17,"Temp. %d: %2d.%d%cC",curTempShown+1,temperatures[curTempShown]/10,temperatures[curTempShown]%10,223);
       snprintf(line2,17,"      <OK>      ");
     }
     else
@@ -127,24 +130,25 @@ class TemperatureEntry : public MenuEntry
       snprintf(line2,17,"      <OK>      ");
     }
   }
-  
+
   int* temperatures;
   int temperatureCount;
-  
-  private:
+
+private:
   boolean showingTemperature;
   int curTempShown;
 };
 
-class HumidityEntry : public MenuEntry
+class HumidityEntry : 
+public MenuEntry
 {
-  public:
+public:
   HumidityEntry()
   {
-    curHimShown=0;
+    curHumiShown=0;
     showingHumi=false;
   }
-  
+
   MenuEntry* onClick(int button)
   {
     if(showingHumi)
@@ -168,11 +172,11 @@ class HumidityEntry : public MenuEntry
     {
       if(button<0)
       {
-        return previous;
+        return previousEntry;
       }
       if(button>0)
       {
-        return next;
+        return nextEntry;
       }
       if(button==0)
       {
@@ -181,7 +185,7 @@ class HumidityEntry : public MenuEntry
       return this;
     }
   }
-  
+
   void show(char* line1, char* line2)
   {
     if(showingHumi)
@@ -195,15 +199,16 @@ class HumidityEntry : public MenuEntry
       snprintf(line2,17,"      <OK>      ");
     }
   }
-  
+
   int* humidities;
   int humiCount;
-  
-  private:
+
+private:
   boolean showingHumi;
   int curHumiShown;
-  
+
 };
+
 
 
 

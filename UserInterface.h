@@ -15,9 +15,9 @@ public:
   void update();
 
   void initializeUI();
-  
+
   void printAll();
-  
+
   void refresh();
 
 private:
@@ -29,14 +29,14 @@ private:
   LiquidCrystal_I2C lcd;
 
   MenuEntry* currentEntry;
-  
+
   char line1[17];
   char line2[17];
-  
-  
+
+
   Timer buttonClick;
   Timer lastTimeClicked;
-  
+
   boolean isUIActive;
 
 
@@ -44,6 +44,7 @@ private:
 };
 
 #endif
+
 
 
 
