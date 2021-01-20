@@ -40,23 +40,23 @@ void UserInterface::update()
 {
   buttonState=analogRead(A0);
 
-  if(buttonState < 900 && buttonActive)//Button down (has to go up again to consider it down again
+  if(buttonState < 999 && buttonActive)//Button down (has to go up again to consider it down again
   {
     lastTimeClicked.restart();
     isUIActive=true;//Just clicked, so wake up if you were not
     buttonActive=false;//Deactivates the button to tell we already pressed it
     MenuEntry* tempEntry=0;//Temporary pointer to safely update currentEntry
-    if(buttonState<400)
+    if(buttonState<444)
     {
-      tempEntry = currentEntry->onClick(1);
+      tempEntry = currentEntry->onClick(-1);
     }
-    else if(buttonState < 600)
+    else if(buttonState < 555)
     {
       tempEntry = currentEntry->onClick(0);
     }
-    else if(buttonState <780)
+    else if(buttonState <777)
     {
-      tempEntry = currentEntry->onClick(-1);
+      tempEntry = currentEntry->onClick(1);
     }
     if(tempEntry)
     {
